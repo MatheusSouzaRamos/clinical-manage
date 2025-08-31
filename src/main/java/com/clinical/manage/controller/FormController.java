@@ -3,7 +3,11 @@ package com.clinical.manage.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clinical.manage.model.Consulta;
 import com.clinical.manage.model.FormData;
+import com.clinical.manage.model.Paciente;
+
+import java.time.LocalDateTime;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +31,14 @@ public class FormController {
         System.out.println("hora: " + formData.getI5() + "\n");
         System.out.println("Minuto: " + formData.getI6() + "\n");
         System.out.println("Recorrente: " + formData.getFlag() + "\n");
+
+        Paciente paciente = new Paciente(formData.getS1(), formData.getI1());
+
+        LocalDateTime dataHora = LocalDateTime.of(formData.getI2(), formData.getI3(), formData.getI4(), formData.getI5(), formData.getI6());
+
+        Consulta consulta = new Consulta(paciente, dataHora);
+
+        
    
         return ResponseEntity.ok("Formulário recebido com sucesso!");
     }

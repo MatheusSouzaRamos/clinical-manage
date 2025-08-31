@@ -3,10 +3,14 @@ package com.clinical.manage.model;
 import java.time.LocalDateTime;
 //import java.time.format.DateTimeFormatter;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "Consulta")
 public class Consulta {
     
     @Id
@@ -14,13 +18,21 @@ public class Consulta {
     private int id;
 
     private Paciente paciente;
-    private String anotacoes;
     private LocalDateTime dataHora;
+    private String anotacoes;
 
     //construtor
+
+    public Consulta(){}
+
     public Consulta(Paciente paciente, String anotacoes, LocalDateTime dataHora){
         this.paciente = paciente;
         this.anotacoes = anotacoes;
+        this.dataHora = dataHora;
+    }
+
+    public Consulta(Paciente paciente, LocalDateTime dataHora){
+        this.paciente = paciente;
         this.dataHora = dataHora;
     }
 
