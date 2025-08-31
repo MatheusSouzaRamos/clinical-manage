@@ -1,13 +1,14 @@
 package com.clinical.manage.model;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+//import java.time.format.DateTimeFormatter;
 
 public class Consulta {
     private Paciente paciente;
     private String anotacoes;
     private LocalDateTime dataHora;
 
+    //construtor
     public Consulta(Paciente paciente, String anotacoes, LocalDateTime dataHora){
         this.paciente = paciente;
         this.anotacoes = anotacoes;
@@ -52,6 +53,12 @@ public class Consulta {
 
     public LocalDateTime getDataHora(){
         return dataHora;
+    }
+
+    //
+    @Override
+    public String toString(){
+        return "{\nPaciente: " + paciente + "\nAnotações: " + anotacoes + "\nData e hora: " + dataHora + "\n}";
     }
 
 }
