@@ -3,7 +3,16 @@ package com.clinical.manage.model;
 import java.time.LocalDateTime;
 //import java.time.format.DateTimeFormatter;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 public class Consulta {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     private Paciente paciente;
     private String anotacoes;
     private LocalDateTime dataHora;

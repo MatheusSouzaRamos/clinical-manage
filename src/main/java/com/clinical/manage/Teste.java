@@ -7,7 +7,7 @@ import com.clinical.manage.model.Paciente;
 
 public class Teste {
     public static void main(String [] args){
-            Paciente paciente = new Paciente(0, "matheus", 21);
+            Paciente paciente = new Paciente("matheus", 21);
             LocalDateTime dataHora = LocalDateTime.now();
 
             Consulta consulta = new Consulta(paciente, "", dataHora);

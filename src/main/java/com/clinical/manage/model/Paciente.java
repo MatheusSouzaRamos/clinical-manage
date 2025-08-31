@@ -1,18 +1,28 @@
 package com.clinical.manage.model;
 
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 public class Paciente {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String nome;
     private int idade;
     
     //construtor
-    public Paciente(int id, String nome, int idade){
-        this.id = id;
+
+    public Paciente() {}
+
+    public Paciente(String nome, int idade){
+        
         this.nome = nome;
         this.idade = idade;
     }
 
-    //setters
     public void setNome(String nome){
         this.nome = nome;
     }
@@ -22,6 +32,10 @@ public class Paciente {
     }
 
     //getters
+    public int getId(){
+        return id;
+    }
+
     public String getNome(){
         return nome;
     }
