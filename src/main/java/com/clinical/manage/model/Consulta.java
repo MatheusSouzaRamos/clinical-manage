@@ -30,11 +30,12 @@ public class Consulta {
 
     //setters aux
 
-    public void addAnotacoes(String add){
-        if(anotacoes.isEmpty())
+    public void addAnotacoes(String add) {
+        if(anotacoes == null || anotacoes.isEmpty()) {
             this.anotacoes = add;
-        else
-            this.anotacoes.concat("\n" + add);
+        }else{
+            this.anotacoes = this.anotacoes.concat("\n" + add);
+        }
     }
 
     public void setDataHora(int ano, int mes, int dia, int hora, int minutos, int segundos){
