@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Formulário – String & Ints & Boolean</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Formulário</h1>
+    <p class="hint">Agendar</p>
+
+    <div class="grid" id="form-root">
+      <div class="row">
+        <div class="field span3">
+          <label for="s1">Nome</label>
+          <input id="s1" type="text" placeholder="Nome" required />
+        </div>
+        <div class="field span3">
+          <label for="i1">Idade</label>
+          <input id="i1" type="number" step="1" placeholder="Idade" required />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field span2">
+          <label for="i2">Ano</label>
+          <input id="i2" type="number" step="1" placeholder="Ano" required />
+        </div>
+        <div class="field span2">
+          <label for="i3">Mês</label>
+          <input id="i3" type="number" step="1" placeholder="Mês" required />
+        </div>
+        <div class="field span2">
+          <label for="i4">Dia</label>
+          <input id="i4" type="number" step="1" placeholder="Dia" required />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field span3">
+          <label for="i5">Hora</label>
+          <input id="i5" type="number" step="1" placeholder="Hora" required />
+        </div>
+        <div class="field span3">
+          <label for="i6">Minutos</label>
+          <input id="i6" type="number" step="1" placeholder="Minutos" required />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field span6">
+          <label>Recorrente</label>
+          <div class="checkbox">
+            <input id="flag" type="checkbox" />
+            <span id="flagLabel">false</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="actions span6">
+          <button id="btnEnviar">Enviar (POST)</button>
+          <button id="btnLimpar" type="button" style="background:#374151;">Limpar</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="span6">
+          <div class="result" id="resposta">Aguardando envio…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function postData(url, data, extraHeaders = {}) {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", ...extraHeaders },
+        body: JSON.stringify(data),
+      });
+      const contentType = response.headers.get("content-type") || "";
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`${response.status} ${response.statusText}: ${errorText}`);
+      }
+      if (contentType.includes("application/json")) return response.json();
+      return response.text();
+    }
+
+    const s1 = document.getElementById('s1');
+    const i1 = document.getElementById('i1');
+    const i2 = document.getElementById('i2');
+    const i3 = document.getElementById('i3');
+    const i4 = document.getElementById('i4');
+    const i5 = document.getElementById('i5');
+    const i6 = document.getElementById('i6');
+    const flag = document.getElementById('flag');
+    const flagLabel = document.getElementById('flagLabel');
+    const btn = document.getElementById('btnEnviar');
+    const btnClear = document.getElementById('btnLimpar');
+    const out = document.getElementById('resposta');
+
+    function toInt(val) {
+      if (val === '' || val === null || val === undefined) return null;
+      const n = Number(val);
+      return Number.isFinite(n) ? Math.trunc(n) : null;
+    }
+
+    flag.addEventListener('change', () => {
+      flagLabel.textContent = flag.checked ? 'true' : 'false';
+    });
+
+    btn.addEventListener('click', async () => {
+      //campos obrigatórios
+      if (!s1.value || !i1.value || !i2.value || !i3.value || !i4.value || !i5.value || !i6.value) {
+        out.textContent = "Preencha todos os campos";
+        return;
+      }
+
+      // Payload
+      const payload = {
+        s1: s1.value,
+        i1: toInt(i1.value),
+        i2: toInt(i2.value),
+        i3: toInt(i3.value),
+        i4: toInt(i4.value),
+        i5: toInt(i5.value),
+        i6: toInt(i6.value),
+        flag: !!flag.checked
+      };
+
+      out.textContent = 'Enviando…';
+
+      try {
+        const url = 'http://localhost:8080/api/form';
+        const res = await postData(url, payload);
+        out.textContent = typeof res === 'string' ? res : JSON.stringify(res, null, 2);
+      } catch (err) {
+        out.textContent = `Erro ao enviar: ${err.message}`;
+      }
+    });
+
+    btnClear.addEventListener('click', () => {
+      s1.value = '';
+      [i1,i2,i3,i4,i5,i6].forEach(inp => inp.value = '');
+      flag.checked = false; flagLabel.textContent = 'false';
+      out.textContent = 'Aguardando envio…';
+    });
+  </script>
+</body>
+</html>
